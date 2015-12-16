@@ -67,3 +67,5 @@ media/*
 staticfiles/*
 
 !.gitkeep
+
+db.sqlite3
