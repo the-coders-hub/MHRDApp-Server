@@ -17,8 +17,14 @@ Including another URLconf
 from django.conf.urls import url, include
 from django.contrib import admin
 import account.urls
+from account.views import AccountViewset
+from rest_framework.routers import DefaultRouter
+
+router = DefaultRouter()
+router.register('account', AccountViewset, base_name='account')
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
-    url(r'', include(account.urls, namespace='account')),
+    url(r'^api/', include(router.urls, namespace='api')),
+    url(r'^account/', include(account.urls, namespace='account')),
 ]
