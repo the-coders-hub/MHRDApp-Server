@@ -24,7 +24,7 @@ ADMINS = (
     ('Dheerendra Rathor', 'dheeru.rathor14@gmail.com'),
 )
 
-MEDIA_URL = "http://localhost:8000/media/"
+MEDIA_URL = "/media/"
 
 STATIC_URL = "/static/"
 

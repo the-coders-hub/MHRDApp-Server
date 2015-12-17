@@ -2,3 +2,4 @@ Django==1.9
 django-simple-history==1.7.0
 djangorestframework==3.3.2
 python-memcached==1.57
+python-magic==0.4.10

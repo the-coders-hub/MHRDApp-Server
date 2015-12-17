@@ -16,15 +16,29 @@ Including another URLconf
 """
 from django.conf.urls import url, include
 from django.contrib import admin
-import account.urls
 from account.views import AccountViewset
 from rest_framework.routers import DefaultRouter
+from college.views import CollegeViewset
+import re
+from django.conf import settings
+from django.views.static import serve
+from .views import media_file_view
 
 router = DefaultRouter()
 router.register('account', AccountViewset, base_name='account')
+router.register('college', CollegeViewset, base_name='college')
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^api/', include(router.urls, namespace='api')),
-    url(r'^account/', include(account.urls, namespace='account')),
+]
+
+# Fail safe! If nginx is down, this might come handy.
+urlpatterns += [
+    url(r'^%s(?P<path>.*)$' % re.escape(settings.STATIC_URL.lstrip('/')), serve,
+        kwargs={
+            'document_root': settings.STATIC_ROOT,
+        }
+        ),
+    url(r'^%s(?P<path>.*)$' % re.escape(settings.MEDIA_URL.lstrip('/')), media_file_view),
 ]

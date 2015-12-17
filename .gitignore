@@ -65,6 +65,7 @@ target/
 logs/*
 media/*
 staticfiles/*
+mhrd/settings_user.py
 
 !.gitkeep
 

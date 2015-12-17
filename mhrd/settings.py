@@ -41,6 +41,8 @@ INSTALLED_APPS = [
     'rest_framework',
     'simple_history',
     'account',
+    'core',
+    'college',
 ]
 
 MIDDLEWARE_CLASSES = [
