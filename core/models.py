@@ -61,4 +61,4 @@ class File(models.Model):
 
 class Tag(models.Model):
     tag = models.CharField(max_length=16)
-    subscribers = models.ManyToManyField(User)
+    subscribers = models.ManyToManyField(User, blank=True)

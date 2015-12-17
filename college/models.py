@@ -11,8 +11,8 @@ class College(models.Model):
     location = models.TextField()
     phone = models.CharField(max_length=32, null=True, blank=True)
     homepage = models.URLField(null=True, blank=True)
-    email_domains = models.ManyToManyField(EmailDomain)
-    tags = models.ManyToManyField(Tag)
+    email_domains = models.ManyToManyField(EmailDomain, blank=True)
+    tags = models.ManyToManyField(Tag, blank=True)
     _history_ = HistoricalRecords()
 
     def __str__(self):
