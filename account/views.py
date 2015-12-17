@@ -239,3 +239,12 @@ class UserViewset(viewsets.ReadOnlyModelViewSet):
         if get_verified:
             designations = designations.filter(verified=True)
         return Response(DesignationSerializer(designations, many=True).data)
+
+    @list_route()
+    def current(self, request):
+        """
+        Get current user details
+        ---
+        response_serializer: core.serializers.UserSerializer
+        """
+        return Response(UserSerializer(request.user).data)
