@@ -1,7 +1,6 @@
 from rest_framework import serializers
 from .models import Post, Reply
 from core.serializers import FileSerializer, UserSerializer
-from core.models import Tag
 
 
 class PostSerializer(serializers.ModelSerializer):
@@ -15,7 +14,7 @@ class PostSerializer(serializers.ModelSerializer):
     def get_user(cls, obj):
         if obj.anonymous:
             return None
-        return UserSerializer(obj)
+        return UserSerializer(obj.user).data
 
     class Meta:
         model = Post

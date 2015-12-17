@@ -21,11 +21,16 @@ class TagSerializer(serializers.ModelSerializer):
 
 class UserSerializer(serializers.ModelSerializer):
     picture = FileSerializer(source='profile.picture')
+    college = serializers.SerializerMethodField()
     designations = FilteredDesignationSerializer(many=True, source='profile.designations')
+
+    def get_college(self, obj):
+        from college.serializers import CollegeSerializer
+        return CollegeSerializer(obj.profile.college).data
 
     class Meta:
         model = User
-        fields = ['id', 'username', 'first_name', 'last_name', 'email', 'picture', 'designations']
+        fields = ['id', 'username', 'first_name', 'last_name', 'email', 'college', 'picture', 'designations']
 
 
 class SimpleResponseSerializer(serializers.Serializer):

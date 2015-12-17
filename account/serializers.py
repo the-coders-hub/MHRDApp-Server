@@ -61,4 +61,6 @@ class UpdateProfileSerializer(serializers.ModelSerializer):
         except KeyError:
             pass
         user.save()
+        instance.college = validated_data['college']
+        instance.save()
         return instance
