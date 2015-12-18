@@ -6,7 +6,7 @@ from .models import College
 class CollegeSerializer(serializers.ModelSerializer):
     logo = FileSerializer()
     cover = FileSerializer()
-    tags = serializers.StringRelatedField(many=True)
+    tags = TagSerializer(many=True)
 
     class Meta:
         model = College

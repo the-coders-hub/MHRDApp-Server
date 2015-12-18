@@ -38,3 +38,18 @@ class UpdatePostSerializer(NewPostSerializer):
 
     class Meta(NewPostSerializer.Meta):
         fields = ['title', 'content', 'tags', 'anonymous', 'visibility']
+
+
+class ReplySerializer(serializers.ModelSerializer):
+    upvotes = serializers.IntegerField(source='upvotes.count')
+    downvotes = serializers.IntegerField(source='downvotes.count')
+
+    class Meta:
+        model = Reply
+
+class NewReplySerializer(serializers.ModelSerializer):
+    post = serializers.PrimaryKeyRelatedField(queryset=Post.objects.all())
+
+    class Meta:
+        model = Reply
+        fields = ['post', 'content', 'visibility']
