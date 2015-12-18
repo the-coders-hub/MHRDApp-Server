@@ -201,6 +201,13 @@ class PostViewset(SerializerClassRequestContextMixin, viewsets.ModelViewSet):
         posts = self.get_queryset().filter(tags__in=request.user.profile.college.tags.all())
         return Response(self.get_context_serializer_class(PostSerializer, posts, many=True).data)
 
+    @list_route()
+    def current(self, request):
+        """
+        Get posts of current user as OP
+        """
+        posts = self.get_queryset().filter(user=request.user)
+        return Response(self.get_context_serializer_class(PostSerializer, posts, many=True).data)
 
 class ReplyViewset(viewsets.GenericViewSet):
     serializer_class = ReplySerializer
