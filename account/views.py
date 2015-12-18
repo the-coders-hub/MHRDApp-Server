@@ -184,6 +184,11 @@ class UserViewset(viewsets.ReadOnlyModelViewSet):
         ---
         request_serializer: core.serializers.FileSerializer
         response_serializer: core.serializers.UserSerializer
+        parameters:
+          - name: file
+            type: base64 string
+            description: Base64 string of image
+            required: true
         """
         profile = get_object_or_404(UserProfile, user_id=pk)
         if request.user.id != profile.user.id:

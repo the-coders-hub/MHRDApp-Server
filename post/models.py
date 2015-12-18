@@ -23,8 +23,8 @@ class Post(models.Model):
     anonymous = models.BooleanField(default=False)
     visibility = models.CharField(max_length=1, choices=CONTENT_VISIBILITY, default=CONTENT_VISIBLE)
     attachments = models.ManyToManyField(File, blank=True)
-    upvotes = models.ManyToManyField(User, related_name='post_upvotes')
-    downvotes = models.ManyToManyField(User, related_name='post_downvotes')
+    upvotes = models.ManyToManyField(User, related_name='post_upvotes', blank=True)
+    downvotes = models.ManyToManyField(User, related_name='post_downvotes', blank=True)
 
 
 class Reply(models.Model):
@@ -32,7 +32,7 @@ class Reply(models.Model):
     content = models.TextField()
     post = models.ForeignKey(Post, related_name='replies')
     created = models.DateTimeField(auto_now_add=True)
-    upvotes = models.ManyToManyField(User, related_name='comment_upvotes')
-    downvotes = models.ManyToManyField(User, related_name='comment_downvotes')
+    upvotes = models.ManyToManyField(User, related_name='comment_upvotes', blank=True)
+    downvotes = models.ManyToManyField(User, related_name='comment_downvotes', blank=True)
     visibility = models.CharField(max_length=1, choices=CONTENT_VISIBILITY, default=CONTENT_VISIBLE)
 

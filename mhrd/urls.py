@@ -26,6 +26,7 @@ from rest_framework.routers import DefaultRouter
 from account.views import AccountViewset, UserViewset
 from college.views import CollegeViewset
 from core.views import TagViewset
+from post.views import PostViewset
 from .views import media_file_view
 
 router = DefaultRouter()
@@ -33,6 +34,7 @@ router.register('account', AccountViewset, base_name='account')
 router.register('college', CollegeViewset, base_name='college')
 router.register('user', UserViewset, base_name='user')
 router.register('tag', TagViewset, base_name='tag')
+router.register('post', PostViewset, base_name='post')
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
