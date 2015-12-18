@@ -50,7 +50,7 @@ class PostViewset(viewsets.ModelViewSet):
             if visibility:
                 post.visibility = visibility
             if anonymous:
-                post.anonymous = True
+                post.anonymous = anonymous
 
             post.save()
             post.tags.all().delete()
