@@ -16,9 +16,11 @@ class PostViewset(SerializerClassRequestContextMixin, viewsets.ModelViewSet):
 
     def get_queryset(self):
         user = self.request.user
-        queryset = Post.objects.all().filter(visibility=CONTENT_VISIBLE)
-        queryset_hidden = Post.objects.all().filter(visibility=CONTENT_HIDDEN, user=user)
-        return queryset | queryset_hidden
+        base_queryset = Post.objects.all()
+        queryset = base_queryset.filter(visibility=CONTENT_VISIBLE)
+        queryset |= base_queryset.filter(visibility=CONTENT_HIDDEN, user=user)
+        queryset = queryset.order_by('-created')
+        return queryset
 
     def create(self, request, *args, **kwargs):
         """
@@ -188,6 +190,7 @@ class PostViewset(SerializerClassRequestContextMixin, viewsets.ModelViewSet):
             raise Http404
         replies = Reply.objects.all().filter(visibility=CONTENT_VISIBLE, post=post)
         replies |= Reply.objects.all().filter(visibility=CONTENT_HIDDEN, post=post, user=request.user)
+        replies = replies.order_by('-created')
         return Response(ReplySerializer(replies, many=True).data)
 
     @list_route()
@@ -197,6 +200,7 @@ class PostViewset(SerializerClassRequestContextMixin, viewsets.ModelViewSet):
         """
         posts = self.get_queryset().filter(tags__in=request.user.profile.college.tags.all())
         return Response(self.get_context_serializer_class(PostSerializer, posts, many=True).data)
+
 
 class ReplyViewset(viewsets.GenericViewSet):
     serializer_class = ReplySerializer
