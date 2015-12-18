@@ -7,9 +7,10 @@ from rest_framework.response import Response
 from rest_framework.status import HTTP_400_BAD_REQUEST, HTTP_403_FORBIDDEN
 from core.models import File
 from django.http import Http404
+from core.views import SerializerClassRequestContextMixin
 
 
-class PostViewset(viewsets.ModelViewSet):
+class PostViewset(SerializerClassRequestContextMixin, viewsets.ModelViewSet):
     serializer_class = PostSerializer
     permission_classes = [IsAuthenticated]
 
@@ -59,7 +60,7 @@ class PostViewset(viewsets.ModelViewSet):
             post.attachments.all().delete()
             post.attachments.add(*files)
 
-            return Response(PostSerializer(post).data)
+            return Response(self.get_context_serializer_class(PostSerializer, post).data)
         else:
             return Response(serialized_data.errors, status=HTTP_400_BAD_REQUEST)
 
@@ -112,7 +113,7 @@ class PostViewset(viewsets.ModelViewSet):
                 pass
 
             post.save()
-            return Response(PostSerializer(post).data)
+            return Response(self.get_context_serializer_class(PostSerializer, post).data)
         else:
             return Response(serialized_data.errors, status=HTTP_400_BAD_REQUEST)
 
@@ -160,7 +161,7 @@ class PostViewset(viewsets.ModelViewSet):
         post = self.get_object()
         post.downvotes.remove(request.user)
         post.upvotes.add(request.user)
-        return Response(PostSerializer(post).data)
+        return Response(self.get_context_serializer_class(PostSerializer, post).data)
 
     @detail_route(methods=['POST'])
     def downvote(self, request, pk):
@@ -173,7 +174,7 @@ class PostViewset(viewsets.ModelViewSet):
         post = self.get_object()
         post.upvotes.remove(request.user)
         post.downvotes.add(request.user)
-        return Response(PostSerializer(post).data)
+        return Response(self.get_context_serializer_class(PostSerializer, post).data)
 
     @detail_route()
     def get_replies(self, request, pk):

@@ -11,11 +11,14 @@ class PostSerializer(serializers.ModelSerializer):
     upvotes = serializers.IntegerField(source='upvotes.count')
     downvotes = serializers.IntegerField(source='downvotes.count')
 
-    @classmethod
-    def get_user(cls, obj):
-        if obj.anonymous:
-            return None
-        return UserSerializer(obj.user).data
+    def get_user(self, obj):
+        try:
+            user = self.context['request'].user
+        except KeyError:
+            user = None
+        if user == obj.user or not obj.anonymous:
+            return UserSerializer(obj.user).data
+        return None
 
     class Meta:
         model = Post
