@@ -14,21 +14,25 @@ Including another URLconf
     2. Import the include() function: from django.conf.urls import url, include
     3. Add a URL to urlpatterns:  url(r'^blog/', include(blog_urls))
 """
+import re
+
+import rest_framework_swagger.urls
+from django.conf import settings
 from django.conf.urls import url, include
 from django.contrib import admin
-from account.views import AccountViewset, UserViewset
-from rest_framework.routers import DefaultRouter
-from college.views import CollegeViewset
-import re
-from django.conf import settings
 from django.views.static import serve
+from rest_framework.routers import DefaultRouter
+
+from account.views import AccountViewset, UserViewset
+from college.views import CollegeViewset
+from core.views import TagViewset
 from .views import media_file_view
-import rest_framework_swagger.urls
 
 router = DefaultRouter()
 router.register('account', AccountViewset, base_name='account')
 router.register('college', CollegeViewset, base_name='college')
 router.register('user', UserViewset, base_name='user')
+router.register('tag', TagViewset, base_name='tag')
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),

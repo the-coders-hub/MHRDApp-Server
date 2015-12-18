@@ -184,21 +184,19 @@ class UserViewset(viewsets.ReadOnlyModelViewSet):
         ---
         request_serializer: core.serializers.FileSerializer
         response_serializer: core.serializers.UserSerializer
-        parameters:
-            - name: file
-              type: file
-              required: true
         """
         profile = get_object_or_404(UserProfile, user_id=pk)
         if request.user.id != profile.user.id:
             return Response({'success': False, 'message': 'Unauthorized request'}, status=HTTP_403_FORBIDDEN)
-        picture = request.FILES.get('file', None)
-        if not picture:
-            return Response({}, status=HTTP_400_BAD_REQUEST)
-        file = File.objects.create(file=picture)
-        profile.picture = file
-        profile.save()
-        return Response(UserSerializer(profile.user).data)
+        serialized_data = FileSerializer(data=request.data)
+        if serialized_data.is_valid():
+            file = serialized_data.save()
+            profile.picture = file
+            profile.save()
+            return Response(UserSerializer(profile.user).data)
+        else:
+            return Response(serialized_data.errors, status=HTTP_400_BAD_REQUEST)
+
 
     @detail_route(methods=['POST'], serializer_class=FilteredDesignationSerializer)
     def add_designation(self, request, pk):
