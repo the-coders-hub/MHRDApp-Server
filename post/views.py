@@ -127,7 +127,7 @@ class PostViewset(SerializerClassRequestContextMixin, viewsets.ModelViewSet):
         if post.user.id != request.user.id:
             return Response({'success': False, 'message': 'Unauthorized Access'}, status=HTTP_403_FORBIDDEN)
 
-        for attachment in post.attachments:
+        for attachment in post.attachments.all():
             attachment.delete()
 
         post.visibility = CONTENT_DELETED
