@@ -54,7 +54,7 @@ class PostViewset(viewsets.ModelViewSet):
 
             post.save()
             post.tags.all().delete()
-            tags = serialized_data.validated_data.get('tag', [])
+            tags = serialized_data.validated_data.get('tags', [])
             post.tags.add(*tags)
             post.attachments.all().delete()
             post.attachments.add(*files)
