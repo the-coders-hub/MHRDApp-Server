@@ -190,6 +190,13 @@ class PostViewset(SerializerClassRequestContextMixin, viewsets.ModelViewSet):
         replies |= Reply.objects.all().filter(visibility=CONTENT_HIDDEN, post=post, user=request.user)
         return Response(ReplySerializer(replies, many=True).data)
 
+    @list_route()
+    def filtered(self, request):
+        """
+        Get posts related to user's college tags
+        """
+        posts = self.get_queryset().filter(tags__in=request.user.profile.college.tags.all())
+        return Response(self.get_context_serializer_class(PostSerializer, posts, many=True).data)
 
 class ReplyViewset(viewsets.GenericViewSet):
     serializer_class = ReplySerializer
