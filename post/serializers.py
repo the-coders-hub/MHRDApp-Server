@@ -6,7 +6,7 @@ from core.models import Tag
 
 class PostSerializer(serializers.ModelSerializer):
     attachments = FileSerializer(many=True)
-    user = UserSerializer()
+    user = serializers.SerializerMethodField()
     tags = serializers.StringRelatedField(many=True, required=False)
     upvotes = serializers.IntegerField(source='upvotes.count')
     downvotes = serializers.IntegerField(source='downvotes.count')
