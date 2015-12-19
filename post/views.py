@@ -214,7 +214,7 @@ class PostViewset(SerializerClassRequestContextMixin, viewsets.ModelViewSet):
             tags = college.tags.all()
         else:
             tags = []
-        posts = self.get_queryset().filter(tags__in=tags)
+        posts = self.get_queryset().filter(tags__in=tags).distinct()
         return Response(self.get_context_serializer_class(PostSerializer, posts, many=True).data)
 
     @list_route()
