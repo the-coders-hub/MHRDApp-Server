@@ -202,7 +202,7 @@ class PostViewset(SerializerClassRequestContextMixin, viewsets.ModelViewSet):
         replies = Reply.objects.all().filter(visibility=CONTENT_VISIBLE, post=post)
         replies |= Reply.objects.all().filter(visibility=CONTENT_HIDDEN, post=post, user=request.user)
         replies = replies.order_by('-created')
-        return Response(ReplySerializer(replies, many=True).data)
+        return Response(self.get_context_serializer_class(ReplySerializer, replies, many=True).data)
 
     @list_route()
     def filtered(self, request):
@@ -225,7 +225,8 @@ class PostViewset(SerializerClassRequestContextMixin, viewsets.ModelViewSet):
         posts = self.get_queryset().filter(user=request.user)
         return Response(self.get_context_serializer_class(PostSerializer, posts, many=True).data)
 
-class ReplyViewset(viewsets.GenericViewSet):
+
+class ReplyViewset(SerializerClassRequestContextMixin, viewsets.GenericViewSet):
     serializer_class = ReplySerializer
     permission_classes = [IsAuthenticated]
 
@@ -256,7 +257,7 @@ class ReplyViewset(viewsets.GenericViewSet):
                 pass
 
             reply.save()
-            return Response(ReplySerializer(reply).data)
+            return Response(self.get_context_serializer_class(ReplySerializer, reply).data)
         else:
             return Response(serialized_data.errors, status=HTTP_400_BAD_REQUEST)
 
@@ -287,7 +288,7 @@ class ReplyViewset(viewsets.GenericViewSet):
         reply = self.get_object()
         reply.downvotes.remove(request.user)
         reply.upvotes.add(request.user)
-        return Response(ReplySerializer(reply).data)
+        return Response(self.get_context_serializer_class(ReplySerializer, reply).data)
 
     @detail_route(methods=['POST'])
     def downvote(self, request, pk):
@@ -300,4 +301,17 @@ class ReplyViewset(viewsets.GenericViewSet):
         reply = self.get_object()
         reply.upvotes.remove(request.user)
         reply.downvotes.add(request.user)
-        return Response(ReplySerializer(reply).data)
+        return Response(self.get_context_serializer_class(ReplySerializer, reply).data)
+
+    @detail_route(methods=['POST'])
+    def remove_vote(self, request, pk):
+        """
+        Remove casted vote. Upvote -> remove_vote -> no vote.
+        ---
+        parameters_strategy:
+            form: replace
+        """
+        reply = self.get_object()
+        reply.upvotes.remove(request.user)
+        reply.downvotes.remove(request.user)
+        return Response(self.get_context_serializer_class(ReplySerializer, reply).data)
