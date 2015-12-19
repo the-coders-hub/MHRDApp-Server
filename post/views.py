@@ -209,7 +209,12 @@ class PostViewset(SerializerClassRequestContextMixin, viewsets.ModelViewSet):
         """
         Get posts related to user's college tags
         """
-        posts = self.get_queryset().filter(tags__in=request.user.profile.college.tags.all())
+        college = request.user.profile.college
+        if college:
+            tags = college.tags.all()
+        else:
+            tags = []
+        posts = self.get_queryset().filter(tags__in=tags)
         return Response(self.get_context_serializer_class(PostSerializer, posts, many=True).data)
 
     @list_route()
