@@ -46,6 +46,7 @@ class UpdatePostSerializer(NewPostSerializer):
 class ReplySerializer(serializers.ModelSerializer):
     upvotes = serializers.IntegerField(source='upvotes.count')
     downvotes = serializers.IntegerField(source='downvotes.count')
+    user = UserSerializer()
 
     class Meta:
         model = Reply

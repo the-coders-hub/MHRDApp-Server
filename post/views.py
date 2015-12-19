@@ -56,10 +56,8 @@ class PostViewset(SerializerClassRequestContextMixin, viewsets.ModelViewSet):
                 post.anonymous = anonymous
 
             post.save()
-            post.tags.all().delete()
             tags = serialized_data.validated_data.get('tags', [])
             post.tags.add(*tags)
-            post.attachments.all().delete()
             post.attachments.add(*files)
 
             return Response(self.get_context_serializer_class(PostSerializer, post).data)
@@ -99,7 +97,7 @@ class PostViewset(SerializerClassRequestContextMixin, viewsets.ModelViewSet):
 
             try:
                 tags = serialized_data.validated_data['tags']
-                post.tags.all().delete()
+                post.tags.clear()
                 post.tags.add(*tags)
             except KeyError:
                 pass
@@ -149,12 +147,12 @@ class PostViewset(SerializerClassRequestContextMixin, viewsets.ModelViewSet):
         parameters_strategy:
             form: replace
         """
-        self.update(request, *args, **kwargs)
+        return self.update(request, *args, **kwargs)
 
     @detail_route(methods=['POST'])
     def upvote(self, request, pk):
         """
-        Upvote a post
+        Upvote a post. Remove downvote of user if present.
         ---
         parameters_strategy:
             form: replace
@@ -168,7 +166,7 @@ class PostViewset(SerializerClassRequestContextMixin, viewsets.ModelViewSet):
     @detail_route(methods=['POST'])
     def downvote(self, request, pk):
         """
-        Downvote a post
+        Downvote a post. Remove upvote of user if present.
         ---
         parameters_strategy:
             form: replace
@@ -176,6 +174,19 @@ class PostViewset(SerializerClassRequestContextMixin, viewsets.ModelViewSet):
         post = self.get_object()
         post.upvotes.remove(request.user)
         post.downvotes.add(request.user)
+        return Response(self.get_context_serializer_class(PostSerializer, post).data)
+
+    @detail_route(methods=['POST'])
+    def remove_vote(self, request, pk):
+        """
+        Remove casted vote. Upvote -> remove_vote -> no vote.
+        ---
+        parameters_strategy:
+            form: replace
+        """
+        post = self.get_object()
+        post.upvotes.remove(request.user)
+        post.downvotes.remove(request.user)
         return Response(self.get_context_serializer_class(PostSerializer, post).data)
 
     @detail_route()
