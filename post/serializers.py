@@ -10,6 +10,18 @@ class PostSerializer(serializers.ModelSerializer):
     tags = serializers.StringRelatedField(many=True, required=False)
     upvotes = serializers.IntegerField(source='upvotes.count')
     downvotes = serializers.IntegerField(source='downvotes.count')
+    user_vote = serializers.SerializerMethodField()
+
+    def get_user_vote(self, obj):
+        try:
+            user = self.context['request'].user
+        except KeyError:
+            return 0
+        if user in obj.upvotes.all():
+            return 1
+        if user in obj.downvotes.all():
+            return -1
+        return 0
 
     def get_user(self, obj):
         try:
@@ -23,7 +35,7 @@ class PostSerializer(serializers.ModelSerializer):
     class Meta:
         model = Post
         fields = ['id', 'title', 'content', 'created', 'tags', 'anonymous', 'visibility', 'attachments',
-                  'upvotes', 'downvotes', 'user']
+                  'upvotes', 'downvotes', 'user', 'user_vote']
 
 
 class NewPostSerializer(serializers.ModelSerializer):
@@ -47,6 +59,18 @@ class ReplySerializer(serializers.ModelSerializer):
     upvotes = serializers.IntegerField(source='upvotes.count')
     downvotes = serializers.IntegerField(source='downvotes.count')
     user = UserSerializer()
+    user_vote = serializers.SerializerMethodField()
+
+    def get_user_vote(self, obj):
+        try:
+            user = self.context['request'].user
+        except KeyError:
+            return 0
+        if user in obj.upvotes.all():
+            return 1
+        if user in obj.downvotes.all():
+            return -1
+        return 0
 
     class Meta:
         model = Reply
