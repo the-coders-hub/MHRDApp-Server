@@ -1,12 +1,14 @@
-from django.http import FileResponse, HttpResponse
-from django.views.static import serve
-from django.conf import settings
+import os
 import posixpath
 from urllib.parse import unquote
+
+from django.conf import settings
+from django.http import FileResponse, HttpResponse
+from django.shortcuts import get_object_or_404, render_to_response
+from django.views.static import serve
+
+from core.core import get_apk_url
 from core.models import File
-from django.shortcuts import get_object_or_404
-from django.shortcuts import render_to_response
-import os
 
 
 def media_file_view(request, path):
@@ -35,5 +37,4 @@ def media_file_accel(request, path):
 
 
 def index(request):
-    return render_to_response('index.html', {})
-
+    return render_to_response('index.html', {'APK_URL': get_apk_url()})

@@ -8,8 +8,8 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.status import HTTP_400_BAD_REQUEST, HTTP_403_FORBIDDEN
 
-from core.models import File
 from core.serializers import UserSerializer, FileSerializer
+from core.core import get_apk_url
 from .models import SignUpCode, UserToken, EmailDomain, UserProfile, Designation
 from .serializers import (SignUpWriteSerializer, RegistrationSerializer, LoginSerializer,
                           UpdateProfileSerializer, FilteredDesignationSerializer, DesignationSerializer)
@@ -20,15 +20,22 @@ class AccountViewset(viewsets.GenericViewSet):
     serializer_class = SignUpWriteSerializer
 
     @classmethod
-    def send_verification_email(cls, to_email, code):
-        subject = 'Verify your account for MHRD Applicaiton'
+    def send_verification_email(cls, request, to_email, code):
+        absolute_apk_url = request.build_absolute_uri(get_apk_url())
+        subject = 'Verify your account for MHRD Link'
         message = """
+        Hello,
         To verify your account, copy paste the following code into verification panel.
 
         %s
 
+        Download our Android application from %s and use this code to register your account.
+
         If you got this mail by error, please ignore it!
-        """ % code
+
+        Regards,
+        Team MHRD Link
+        """ % (code, absolute_apk_url)
         send_mail(subject, message, 'no-reply@mhrdapp.com', [to_email])
 
     @list_route(methods=['POST'])
@@ -55,7 +62,7 @@ class AccountViewset(viewsets.GenericViewSet):
             if signup_code.verified:
                 return Response({'success': False, 'message': 'Email already registered'}, status=HTTP_400_BAD_REQUEST)
             if created:
-                self.send_verification_email(email, signup_code.code)
+                self.send_verification_email(request, email, signup_code.code)
                 return Response({'success': True, 'message': 'Email sent with verification code'})
             return Response(
                 {'success': False, 'message': 'Email verification request already sent'},
@@ -84,7 +91,7 @@ class AccountViewset(viewsets.GenericViewSet):
             SignUpCode.objects.all().filter(email=email).update(active=False)
             signup_code = SignUpCode.objects.create(email=email)
 
-            self.send_verification_email(email, signup_code.code)
+            self.send_verification_email(request, email, signup_code.code)
             return Response({'success': True, 'message': 'Email sent with verification code'})
         else:
             return Response(serialized_email.errors, status=HTTP_400_BAD_REQUEST)
