@@ -70,3 +70,5 @@ mhrd/settings_user.py
 !.gitkeep
 
 db.sqlite3
+
+uwsgi.ini

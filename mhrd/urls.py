@@ -27,7 +27,7 @@ from account.views import AccountViewset, UserViewset
 from college.views import CollegeViewset
 from core.views import TagViewset
 from post.views import PostViewset, ReplyViewset
-from .views import media_file_view
+from .views import media_file_accel, index
 
 router = DefaultRouter()
 router.register('account', AccountViewset, base_name='account')
@@ -38,6 +38,7 @@ router.register('post', PostViewset, base_name='post')
 router.register('reply', ReplyViewset, base_name='reply')
 
 urlpatterns = [
+    url(r'^$', index, name='index'),
     url(r'^admin/', admin.site.urls),
     url(r'^api/', include(router.urls, namespace='api')),
     url(r'^api-docs/', include(rest_framework_swagger.urls, namespace='api-docs')),
@@ -50,5 +51,5 @@ urlpatterns += [
             'document_root': settings.STATIC_ROOT,
         }
         ),
-    url(r'^%s(?P<path>.*)$' % re.escape(settings.MEDIA_URL.lstrip('/')), media_file_view),
+    url(r'^%s(?P<path>.*)$' % re.escape(settings.MEDIA_URL.lstrip('/')), media_file_accel),
 ]

@@ -1,0 +1,278 @@
+{% load staticfiles %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>MHRD Link</title>
+    <meta name="description" content="Home page for Techfest 2015 competition submission MHRD Link"/>
+    <meta name="keywords" content="mhrd, mhrd home page"/>
+    <meta name="author" content="co-authored by Bijoy Singh Kochar, Dheerendra Singh Rathor, Ranveer Aggarwal"/>
+    <link rel="icon" type="image/png" href="{% static 'icons/favicon.png' %}">
+    <meta name="theme-color" content="#ffffff">
+
+    <style type="text/css">
+        @import url(http://fonts.googleapis.com/css?family=Roboto:100,200,300,400,500,700);
+
+        * {
+            padding: 0;
+            margin: 0;
+            font-family: 'Roboto', 'Helvetica Neue', 'Segoe UI', Helvetica, Arial, sans-serif;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            font-weight: 300;
+        }
+
+        body {
+            background-color: white;
+            text-align: center;
+        }
+
+        .title {
+            padding-top: 48px;
+            padding-bottom: 48px;
+            background-color: #1976D2;
+        }
+
+        .title table {
+            margin: auto;
+        }
+
+        .blue-background {
+            background-color: #1E88E5;
+        }
+
+        .dark-blue-background {
+            background-color: #1976D2;
+        }
+
+        .link {
+            padding: 48px;
+            max-width: 600px;
+            margin: auto;
+            text-align: left;
+        }
+
+        .description {
+            color: #2F2F2F;
+            padding: 72px 36px;
+            font-size: 18px;
+            text-align: justify;
+            max-width: 600px;
+            margin: auto;
+        }
+
+        .icon {
+            width: 96px;
+            height: 96px;
+        }
+
+        .title_text {
+            font-size: 64px;
+            color: white;
+            padding: 16px;
+        }
+
+        .sub-heading {
+            color: #2A2A2A;
+            font-size: 36px;
+            padding: 24px 0;
+        }
+
+        .sub-heading-white {
+            color: #ffffff;
+            font-size: 36px;
+            padding: 24px 0;
+            text-align: left;
+        }
+
+        .input {
+            padding: 12px 16px;
+            background-color: rgba(0, 0, 0, 0);
+            border: none;
+            color: white;
+            font-size: 24px;
+            border-bottom: rgba(255, 255, 255, 0.5) solid 2px;
+            margin: 8px 0;
+        }
+
+        .submit {
+            margin: 0 8px;
+            padding: 12px 16px;
+            background-color: transparent;
+            border-radius: 4px;
+            font-size: 24px;
+            color: white;
+            border: rgba(255, 255, 255, 0.5) solid 2px;
+        }
+
+        .submit:hover {
+            background-color: #1976D2;
+        }
+
+        ::-webkit-input-placeholder {
+            color: rgba(255, 255, 255, 0.6);
+        }
+
+        ::-moz-placeholder {
+            color: rgba(255, 255, 255, 0.6);
+        }
+
+        :-moz-placeholder {
+            color: rgba(255, 255, 255, 0.6);
+        }
+
+        :-ms-input-placeholder {
+            color: rgba(255, 255, 255, 0.6);
+        }
+
+        .right-link a {
+            text-decoration: none;
+            color: white;
+        }
+
+        .right-link {
+            color: white;
+            padding: 16px 0;
+        }
+
+        .about-item table tr td {
+            padding: 24px;
+            color: white;
+            font-size: 24px;
+        }
+
+        .about-item table tr td img {
+            width: 96px;
+            height: 96px;
+        }
+
+        .about-item table tr td .designation {
+            font-weight: 200;
+            font-size: 16px;
+        }
+
+        @media (max-width: 610px) {
+            .title_text {
+                font-size: 36px;
+            }
+
+            .about-item table tr td {
+                padding: 12px;
+            }
+
+            .link {
+                padding: 36px;
+            }
+
+            .about-item table tr td .designation {
+                font-size: 14px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="title">
+    <table>
+        <tr>
+            <td><img src="{% static 'icons/icon.png' %}" class="icon"></td>
+            <td><span class="title_text">MHRD Link</span></td>
+        </tr>
+    </table>
+</div>
+<div class="blue-background">
+    <div class="link">
+        <div class="sub-heading-white">Register and Download</div>
+        <form>
+            <input class="input" type="email" placeholder="EMAIL ID"/>
+            <input class="submit" type="submit" value="Register">
+        </form>
+        <div class="right-link">
+            <a href="{% static 'apk/MHRDLink.apk' %}">Download the Android App</a>
+        </div>
+    </div>
+</div>
+<div class="description">
+    <div class="sub-heading">About</div>
+
+    MHRD policies and decisions are generally taken for the benefits of students - currently studying in one of the
+    institutions under its purview and also the aspirants. In the recent times there has been a sea of changes in the
+    policies, for example the format of the JEE, the course structure, the salaries of the PhD students and the number
+    of IITs, to name a few.<br/> <br/>
+    Most of these decisions were taken by the MHRD themselves, whereas some were taken after requests (and in some case
+    even protests) from the students. In many cases the one thing that was missing was consultation from the people
+    affected by it. The policies are taken by people who are brilliant in their field and who know all the
+    technicalities of the issues. But, a student perspective would always be better.
+    <br/><br/>
+
+    <div class="sub-heading">Our Application</div>
+    We develop an interface connecting the students, the student representatives, Directors and Deans of all government
+    institutions (IITs, NITs etc) with the MHRD. There are two kinds of interactions between the MHRD and the
+    institutions, firstly when the MHRD, while proposing a policy change or creation can post the same on the forum and
+    everyone else on that forum can discuss how that policy would be seen from an institutes perspective. <br/><br/>
+
+    Moreover, the students have some issues, so they can post the same on the forum. These issues will be within an
+    institution, within a subset of all institutions or for all institutions. If the student representatives feel that
+    this issue is big enough to be elevated further, they can elevate the issue and it can be seen by the MHRD and the
+    Directors and Deans of institutions. They can reply to that issue with an existing policy or can draft a new one
+    base on it. This will ensure that the decisions taken by the ministry are transparent and democratic.
+    <br/><br/>
+    Further, our interface would ensure that the more pressing issues are seen first. People will be authenticated via
+    the IDs of their institutions so it’ll ensure that there is no spam. Since our portal doesn’t show all discussions
+    to the HRD and only the elevated issues, this will ensure that people can openly talk about their problems.
+
+</div>
+<div class="blue-background">
+    <div class="link">
+        <div class="sub-heading-white">About Us</div>
+        <div class="about-item">
+            <table>
+                <tr>
+                    <td><img src="{% static 'icons/team1.png' %}"></td>
+                    <td>
+                        Bijoy Singh Kochar
+                        <div class="designation">
+                            Computer Science and Engineering, <br/>
+                            B.Tech. IV, IIT Bombay, <br/>
+                            Powai, Mumbai - 400076
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td><img src="{% static 'icons/team3.png' %}"></td>
+                    <td>Dheerendra Rathor
+                        <div class="designation">
+                            Computer Science and Engineering, <br/>
+                            B.Tech. IV, IIT Bombay, <br/>
+                            Powai, Mumbai - 400076
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td><img src="{% static 'icons/team2.png' %}"></td>
+                    <td>Ranveer Aggarwal
+                        <div class="designation">
+                            Computer Science and Engineering, <br/>
+                            B.Tech. IV, IIT Bombay, <br/>
+                            Powai, Mumbai - 400076
+                        </div>
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </div>
+</div>
+
+<div class="dark-blue-background">
+    <div class="link" style="color: white; text-align: center;">
+        Created for Techfest, IIT Bombay
+    </div>
+</div>
+</body>
+
+</html>
