@@ -174,6 +174,11 @@ LOGGING = {
             'handlers': ['file_application'],
             'level': 'WARNING',
         },
+        'django.security.DisallowedHost': {
+            'handlers': ['mail_admins'],
+            'level': 'CRITICAL',
+            'propagate': False,
+        },
         'django': {
             'handlers': ['file_django', 'mail_admins'],
             'level': 'INFO',
